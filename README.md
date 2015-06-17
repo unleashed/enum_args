@@ -41,7 +41,7 @@ EnumArgs adds all the Enumerable instance methods and a corresponding `each`
 method, which is what we need for a collection, and other than that, just _one_
 single accessor (instance) method to your class and _one_ single instance variable
 with configurable name (default is `enum_args`). You can specify what that name
-should look like by specifying the `with_enum_args_as: :method_name` option to
+should look like by adding the `with_enum_args_as: :method_name` option to
 `enum_args_for`.
 
 A few _class_ methods are added as well to hold default values for your
