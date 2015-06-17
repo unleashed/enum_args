@@ -40,7 +40,9 @@ module EnumArgs
     def rewind
       self.fiber = Fiber.new do
         object.send method_name, *args do |*yielded_values|
+          # :nocov:
           Fiber.yield(*yielded_values)
+          # :nocov:
         end
         raise StopIteration
       end
