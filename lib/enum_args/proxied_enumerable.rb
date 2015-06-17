@@ -5,28 +5,28 @@ module EnumArgs
 
   module ProxiedEnumerable
     module ClassMethods
-      def enum_method
-        @enum_method ||= :iterator
+      def enum_args_method
+        @enum_args_method ||= :iterator
       end
 
-      def enum_accessor_method
-        @enum_accessor_method ||= :enum_args
+      def enum_args_accessor_method
+        @enum_args_accessor_method ||= :enum_args
       end
 
-      def enum_default_args
-        @enum_default_args ||= []
+      def enum_args_default_args
+        @enum_args_default_args ||= []
       end
 
-      def enum_default_using
-        @enum_default_using ||= {}
+      def enum_args_default_using
+        @enum_args_default_using ||= {}
       end
 
       def enum_args_for(method, *args, using: {}, with_enum_as: :enum_args)
-        @enum_method = method
-        @enum_default_args = args
+        @enum_args_method = method
+        @enum_args_default_args = args
         raise TypeError, "expected Hash, found #{using.class}" unless using.is_a? Hash
-        @enum_default_using = using
-        @enum_accessor_method = with_enum_as
+        @enum_args_default_using = using
+        @enum_args_accessor_method = with_enum_as
       end
     end
 
@@ -43,13 +43,19 @@ module EnumArgs
     end
 
     on_enumerable_methods self do |*args, &blk|
-      send(self.class.enum_accessor_method).send __method__, *args, &blk
+      send(self.class.enum_args_accessor_method).send __method__, *args, &blk
     end
 
     def initialize(*args, &blk)
-      @enum_args = EnumArgs::Proxy.new self, self.class.enum_method, *self.class.enum_default_args, using: self.class.enum_default_using
-      define_singleton_method(self.class.enum_accessor_method) do
-        instance_variable_get('@enum_args')
+      klass = self.class
+      name = klass.enum_args_accessor_method
+      instance_variable_set(
+        "@#{name}",
+        EnumArgs::Proxy.new(self, klass.enum_args_method, *klass.enum_args_default_args,
+                            using: klass.enum_args_default_using)
+      )
+      define_singleton_method(name) do
+        instance_variable_get("@#{name}")
       end
       super
     end

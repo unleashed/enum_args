@@ -9,6 +9,17 @@ could, ie. `ai_team.select(max_cpu: 80) { |troop| troop.can_hit?(enemy) }.each
 
 See Usage for some examples.
 
+### Namespace pollution
+
+A common issue with this sort of gems is namespace pollution. EnumArgs is wise
+enough to pollute your namespace with the bare minimum needed.
+
+All of this is done by adding, apart from the Enumerable instance methods, _one_
+single accessor (instance) method to your class and _one_ single instance variable
+with configurable name (default is `enum_args`). A few _class_ methods are added
+to hold default values for your enumerator, all of them prefixed with
+`enum_args_`.
+
 ## Installation
 
 Add this line to your application's Gemfile:
