@@ -12,13 +12,13 @@ module EnumArgs
       @args
     end
 
-    # :nocov:
-    def using=(using)
-      @using = using
-      self.args = args
-      @using
-    end
-    # :nocov:
+    # Currently unused setter
+    #
+    # def using=(using)
+    #   @using = using
+    #   self.args = args
+    #   @using
+    # end
 
     def initialize(object, method_name, *fixed_args, using: {})
       @object = object
