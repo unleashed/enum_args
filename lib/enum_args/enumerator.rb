@@ -16,11 +16,13 @@ module EnumArgs
       @args
     end
 
+    # :nocov:
     def using=(using)
       @using = using
       self.args = args
       @using
     end
+    # :nocov:
 
     def initialize(object, method_name, *fixed_args, using: {}, &yield_handler)
       @object = object
