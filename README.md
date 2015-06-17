@@ -178,7 +178,7 @@ methods. The instance method you will get is `enum_args`, which is the actual
 enumerator that will use your iterator method.
 
 If that bothers you, you can change it by specifiyng a different symbol to
-`enum_args_for` using the `with_enum_as: :your_symbol` keyword argument.
+`enum_args_for` using the `with_enum_args_as: :your_symbol` keyword argument.
 
 ## Development
 

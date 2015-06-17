@@ -56,7 +56,7 @@ class Helpers
     include EnumArgs
 
     enum_args_for :my_iterator, 27, using: {config: 'this', resumeinfo: 'way'},
-      with_enum_as: :enum_with_args
+      with_enum_args_as: :enum_with_args
 
     def initialize
       # do nothing

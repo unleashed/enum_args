@@ -21,12 +21,12 @@ module EnumArgs
         @enum_args_default_using ||= {}
       end
 
-      def enum_args_for(method, *args, using: {}, with_enum_as: :enum_args)
+      def enum_args_for(method, *args, using: {}, with_enum_args_as: :enum_args)
         @enum_args_method = method
         @enum_args_default_args = args
         raise TypeError, "expected Hash, found #{using.class}" unless using.is_a? Hash
         @enum_args_default_using = using
-        @enum_args_accessor_method = with_enum_as
+        @enum_args_accessor_method = with_enum_args_as
       end
     end
 
