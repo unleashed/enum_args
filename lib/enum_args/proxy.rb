@@ -1,7 +1,7 @@
 module EnumArgs
   class Proxy
-    ProxiedEnumerable.on_enumerable_methods self do |*args, &blk|
-      enum_delegate __method__, *args, &blk
+    ProxiedEnumerable.on_enumerable_methods self do |*args, **options, &blk|
+      enum_delegate __method__, args, options, blk
     end
 
     def self.attr_writer_resetting_enum(*writers)
@@ -30,7 +30,7 @@ module EnumArgs
 
     attr_writer :enum
 
-    def enum_delegate(m, *m_args, **options, &blk)
+    def enum_delegate(m, m_args, options, blk)
       # remove specific 'using' options from method call
       iterator_params = extract_iterator_params_from options
 
