@@ -7,18 +7,44 @@ of of the methods provided by Enumerable in a uniform fashion, so that you
 could, ie. `ai_team.select(max_cpu: 80) { |troop| troop.can_hit?(enemy) }.each
 { ... }`.
 
-See Usage for some examples.
+## Basic Usage
+
+You just need to include EnumArgs to your class and call `enum_args_for`.
+
+```ruby
+class MyEnum
+  include EnumArgs
+
+  enum_args_for :my_iterator, 3, 'fixed', 'params', using: { dynamic: :params }
+
+  def my_iterator(how_many, string1, string2, dynamic:)
+    # do something with all params, including dynamic ones
+    # which are always keyword parameters
+    yield element1
+    yield element2
+    # [...]
+  end
+end
+```
+
+**N.B**: You *should avoid* using `each` as the method name for your iterator. Doing
+so will prevent your iterator from consistently getting the correct parameters.
+
+See Usage for additional information.
 
 ### Namespace pollution
 
 A common issue with this sort of gems is namespace pollution. EnumArgs is wise
 enough to pollute your namespace with the bare minimum needed.
 
-All of this is done by adding, apart from the Enumerable instance methods, _one_
-single accessor (instance) method to your class and _one_ single instance variable
-with configurable name (default is `enum_args`). A few _class_ methods are added
-to hold default values for your enumerator, all of them prefixed with
-`enum_args_`.
+All of this is done by adding, apart from the Enumerable instance methods, an
+`each` method, and _one_ single accessor (instance) method to your class and
+_one_ single instance variable with configurable name (default is `enum_args`).
+You can specify what that name should be adding the `with_enum_args_as: :name`
+option to `enum_args_for`.
+
+A few _class_ methods are added as well to hold default values for your
+enumerator, all of them prefixed with `enum_args_`.
 
 ## Installation
 
