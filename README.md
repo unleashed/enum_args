@@ -1,4 +1,4 @@
-[![Gem Version](https://badge.fury.io/rb/enum_args.svg)](http://badge.fury.io/rb/enum_args) [![Build Status](https://travis-ci.org/unleashed/enum_args.svg?branch=master)](https://travis-ci.org/unleashed/enum_args) [![Code Climate](https://codeclimate.com/github/unleashed/enum_args/badges/gpa.svg)](https://codeclimate.com/github/unleashed/enum_args) [![Test Coverage](https://codeclimate.com/github/unleashed/enum_args/badges/coverage.svg)](https://codeclimate.com/github/unleashed/enum_args)
+[![Gem Version](https://badge.fury.io/rb/enum_args.svg)](http://badge.fury.io/rb/enum_args) [![Build Status](https://travis-ci.org/unleashed/enum_args.svg?branch=master)](https://travis-ci.org/unleashed/enum_args) [![Code Climate](https://codeclimate.com/github/unleashed/enum_args/badges/gpa.svg)](https://codeclimate.com/github/unleashed/enum_args) [![Test Coverage](https://codeclimate.com/github/unleashed/enum_args/badges/coverage.svg)](https://codeclimate.com/github/unleashed/enum_args) [![Dependencies](https://img.shields.io/gemnasium/unleashed/enum_args.svg?style=flat)](https://gemnasium.com/unleashed/enum_args) [![License](http://img.shields.io/:license-MIT-blue.svg?style=flat)](LICENSE.txt)
 
 # EnumArgs
 
@@ -193,4 +193,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/unleas
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
+See [LICENSE.txt](LICENSE.txt) for details.
