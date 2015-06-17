@@ -53,14 +53,5 @@ module EnumArgs
       end
       super
     end
-
-    def enum_args=(*args)
-      @enum_args.args = args
-    end
-
-    def enum_using=(using)
-      raise TypeError, "expected Hash, found #{using.class}" unless using.is_a? Hash
-      @enum_args.using = using
-    end
   end
 end
