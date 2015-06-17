@@ -2,8 +2,8 @@
 
 # EnumArgs
 
-EnumArgs is a simple gem that enables your enumerators to receive parameters
-from any of the methods provided by Enumerable in a uniform fashion, so that you
+EnumArgs is a gem that enables your enumerators to receive parameters from any
+of of the methods provided by Enumerable in a uniform fashion, so that you
 could, ie. `ai_team.select(max_cpu: 80) { |troop| troop.can_hit?(enemy) }.each
 { ... }`.
 
