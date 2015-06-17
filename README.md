@@ -42,7 +42,7 @@ class MyCollection
   end
 
   def each(pause = 1, verbose = false)
-    return enum_for(:each, pause) unless block_given?
+    return enum_for(:each, pause, verbose) unless block_given?
     ary.each do |element|
       yield element
       puts "sleeping for #{pause} secs" if verbose
@@ -74,14 +74,14 @@ not exactly ergonomic. But what happens if I wanted to suddenly increase the
 pause time used to 5 secs?
 
 ```ruby
-enumerator.each(10) do |elements|
+enumerator.each(10) do |element|
   puts "This does not quite work"
 end
 ```
 
 Well, we could do better, see:
 ```ruby
-collection.each(5) do |elements|
+collection.each(5) do |element|
   puts "This does work indeed!"
 end
 ```
@@ -91,8 +91,8 @@ whole process again... Except you'll soon discover this:
 
 ```ruby
 # won't work :(
-collection.select(5) do |e|
-  e.odd?
+collection.select(5) do |element|
+  element.odd?
 end
 ```
 
