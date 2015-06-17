@@ -58,7 +58,7 @@ module EnumArgs
     end
 
     def build_enum(merge = {})
-       Enumerator.new(object, method_name, *args, using: self.using.merge(merge))
+      Enumerator.new(object, method_name, *args, using: self.using.merge(merge))
     end
   end
 end
