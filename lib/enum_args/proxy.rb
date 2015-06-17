@@ -34,7 +34,7 @@ module EnumArgs
       # remove specific 'using' options from method call
       iterator_params = extract_iterator_params_from options
 
-      m_args += options unless options.empty?
+      m_args << options unless options.empty?
       e = if iterator_params.empty?
             # no changes, use default enumerator
             enum
@@ -42,10 +42,6 @@ module EnumArgs
             build_enum(iterator_params)
           end
       e.send m, *m_args, &blk
-    rescue TypeError => e
-      # this happens when options is not empty and the method won't accept it
-      raise e unless e.message == 'no implicit conversion of Hash into Array'
-      raise ArgumentError, "#{m} does not accept parameter #{options}"
     end
 
     def extract_iterator_params_from(options)
