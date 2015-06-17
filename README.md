@@ -34,14 +34,15 @@ See Usage for additional information.
 
 ### Namespace pollution
 
-A common issue with this sort of gems is namespace pollution. EnumArgs is wise
-enough to pollute your namespace with the bare minimum needed.
+A common issue with this sort of gems is namespace pollution. EnumArgs works
+hard to use just the bare minimum needed methods.
 
-All of this is done by adding, apart from the Enumerable instance methods, an
-`each` method, and _one_ single accessor (instance) method to your class and
-_one_ single instance variable with configurable name (default is `enum_args`).
-You can specify what that name should be adding the `with_enum_args_as: :name`
-option to `enum_args_for`.
+EnumArgs adds all the Enumerable instance methods and a corresponding `each`
+method, which is what we need for a collection, and other than that, just _one_
+single accessor (instance) method to your class and _one_ single instance variable
+with configurable name (default is `enum_args`). You can specify what that name
+should look like by specifying the `with_enum_args_as: :method_name` option to
+`enum_args_for`.
 
 A few _class_ methods are added as well to hold default values for your
 enumerator, all of them prefixed with `enum_args_`.
