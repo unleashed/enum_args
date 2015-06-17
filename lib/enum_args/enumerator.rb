@@ -4,11 +4,7 @@ module EnumArgs
   class Enumerator
     include Enumerable
 
-    attr_reader :object, :method_name, :args, :using, :yield_handler
-
-    DEFAULT_YIELD_HANDLER = ->(*yielded_values) do
-      Fiber.yield(*yielded_values)
-    end
+    attr_reader :object, :method_name, :args, :using
 
     def args=(args)
       @args = args
@@ -24,12 +20,11 @@ module EnumArgs
     end
     # :nocov:
 
-    def initialize(object, method_name, *fixed_args, using: {}, &yield_handler)
+    def initialize(object, method_name, *fixed_args, using: {})
       @object = object
       @method_name = method_name
       @using = using # don't use self.using=() here, since we can't call it yet
       self.args = fixed_args
-      @yield_handler = yield_handler || DEFAULT_YIELD_HANDLER
       rewind
     end
 
@@ -44,7 +39,9 @@ module EnumArgs
 
     def rewind
       self.fiber = Fiber.new do
-        object.send method_name, *args, &yield_handler
+        object.send method_name, *args do |*yielded_values|
+          Fiber.yield(*yielded_values)
+        end
         raise StopIteration
       end
       self
