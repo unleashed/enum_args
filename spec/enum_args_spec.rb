@@ -37,6 +37,32 @@ RSpec.describe EnumArgs do
       end
     end
 
+    context 'at instance level' do
+      it 'has an instance variable with non-nil value' do
+        expect(subject.instance_variable_get("@#{accessor_method}")).not_to be_nil
+      end
+
+      it 'has an instance variable that is an EnumArgs::Proxy' do
+        expect(subject.instance_variable_get("@#{accessor_method}")).to be_a(EnumArgs::Proxy)
+      end
+
+      it 'responds to the specified instance method' do
+        expect(subject).to respond_to(accessor_method)
+      end
+
+      it 'has an instance method that is an EnumArgs::Proxy' do
+        expect(subject.send(accessor_method)).to be_a(EnumArgs::Proxy)
+      end
+    end
+
+    context 'at class level' do
+      it 'has all provided class methods starting with enum_args_' do
+        expect(subject.class.methods.select do |m|
+          m.to_s.start_with? 'enum_args_'
+        end).to include(*EnumArgs::ProxiedEnumerable::ClassMethods.instance_methods)
+      end
+    end
+
   end
 
   context 'when using EnumArgs::Proxy directly' do
