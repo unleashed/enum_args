@@ -63,6 +63,11 @@ RSpec.describe EnumArgs do
       end
     end
 
+    context 'when specifying malformed dynamic parameters' do
+      it 'raises TypeError' do
+        expect{ enum_args.using = [1,2,3] }.to raise_error(TypeError)
+      end
+    end
   end
 
   context 'when using EnumArgs::Proxy directly' do

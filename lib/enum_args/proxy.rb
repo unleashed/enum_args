@@ -53,6 +53,7 @@ module EnumArgs
     end
 
     def reset_default_enum
+      raise TypeError, "expected Hash, found #{using.class}" unless using.is_a? Hash
       self.enum = build_enum
     end
 
