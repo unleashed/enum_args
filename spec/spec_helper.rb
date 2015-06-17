@@ -1,5 +1,13 @@
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
+unless ENV['NO_COVERAGE']
+  require 'codeclimate-test-reporter'
+  SimpleCov.start do
+    formatter ENV['CODECLIMATE_REPO_TOKEN'] ?
+      CodeClimate::TestReporter::Formatter :
+      SimpleCov::Formatter::HTMLFormatter
+    add_filter '/spec/'
+  end
+end
+
 $LOAD_PATH << File.expand_path('../lib', __FILE__)
 
 require 'enum_args'
