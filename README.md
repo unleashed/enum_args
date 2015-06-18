@@ -45,7 +45,8 @@ should look like by adding the `with_enum_args_as: :method_name` option to
 `enum_args_for`.
 
 A few _class_ methods are added as well to hold default values for your
-enumerator, all of them prefixed with `enum_args_`.
+enumerator, all of them prefixed with `enum_args_`, and an `inherited` hook is
+prepended to support inheritcance.
 
 ## Installation
 
