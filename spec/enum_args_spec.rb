@@ -19,6 +19,47 @@ RSpec.describe EnumArgs do
 
     it_expects_to 'raise on invocation errors'
 
+    it 'receives the original default parameters' do
+      args = Array(enum_args.args).dup
+      args << enum_args.using
+
+      expect(subject).to receive(enum_args.method_name).with(*args)
+
+      subject.each.next rescue StopIteration
+    end
+
+    context 'when inheriting' do
+      subject { Class.new(Helpers::IncludeEnumArgs).new }
+
+      it { is_expected.to be_a(Enumerable) }
+      it { is_expected.to be_a(EnumArgs::ProxiedEnumerable) }
+      it { is_expected.to respond_to(subject.class.enum_args_accessor_method) }
+
+      it 'receives the original default parameters' do
+        args = Array(enum_args.args).dup
+        args << enum_args.using
+
+        expect(subject).to receive(enum_args.method_name).with(*args)
+
+        subject.each.next rescue StopIteration
+      end
+
+      context 'and declaring different default parameters' do
+        subject { Class.new(Helpers::IncludeEnumArgs) {
+          enum_args_for :my_iterator, 30, using: { config: 'inherited', resumeinfo: 'inherited' }
+        }.new }
+
+        it 'receives the changed default parameters' do
+          args = Array(enum_args.args).dup
+          args << { config: 'inherited', resumeinfo: 'inherited' }
+
+          expect(subject).to receive(enum_args.method_name).with(*args)
+
+          subject.each.next rescue StopIteration
+        end
+      end
+    end
+
     context 'when changing the default dynamic parameters' do
       let(:new_params) { { config: 'different', resumeinfo: 'none' } }
 
