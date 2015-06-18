@@ -59,7 +59,7 @@ RSpec.describe EnumArgs do
       it 'has all provided class methods starting with enum_args_' do
         expect(subject.class.methods.select do |m|
           m.to_s.start_with? 'enum_args_'
-        end).to include(*EnumArgs::ProxiedEnumerable::ClassMethods.instance_methods)
+        end).to include(*EnumArgs::ProxiedEnumerable::ClassMethods::METHODS)
       end
     end
 

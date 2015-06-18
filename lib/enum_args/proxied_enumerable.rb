@@ -5,6 +5,9 @@ module EnumArgs
 
   module ProxiedEnumerable
     module ClassMethods
+      METHODS = [:enum_args_method, :enum_args_accessor_method,
+                 :enum_args_default_args, :enum_args_default_using]
+
       def enum_args_method
         @enum_args_method ||= :iterator
       end
@@ -27,6 +30,16 @@ module EnumArgs
         raise TypeError, "expected Hash, found #{using.class}" unless using.is_a? Hash
         @enum_args_default_using = using
         @enum_args_accessor_method = with_enum_args_as
+      end
+
+      me = self # bound variable for the :inherited block
+
+      define_method :inherited do |klass|
+        klass.singleton_class.prepend me
+        METHODS.each do |m|
+          klass.instance_variable_set("@#{m}", send(m))
+        end
+        super(klass)
       end
     end
 
