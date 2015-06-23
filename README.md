@@ -208,6 +208,33 @@ enumerator that will use your iterator method.
 If that bothers you, you can change it by specifiyng a different symbol to
 `enum_args_for` using the `with_enum_args_as: :your_symbol` keyword argument.
 
+## Caching Considerations
+
+You can use the `cache:` keyword argument in `enum_args_for` to provide your own
+caching for enumerator instances. In previous versions, EnumArgs instantiated an
+enumerator with the default arguments, and reused it when there were calls that
+specified no arguments. For the rest of the calls, EnumArgs instantiated a new
+ephemeral enumerator, and used it only for serving that call.
+
+There were two problems with this behaviour. For starters, it was not uniform.
+You got a new instance of an enumerator in some cases, while reusing an instance
+in other cases. This made writing thread-safe enumerators hard. On the other
+hand, you also could not easily cache enumerators if you were sure that no other
+thread would mess with them, and instead you would waste resources creating and
+destroying enumerators all over the place.
+
+In order to fix this, now all enumerators are instantiated on the fly by
+default, but users now get direct access to how that enumerator is built by
+providing this `cache` keyword argument. The requirement is that it supports
+a `call(object, method_name, fixed_arguments, variable_arguments_hash,
+create_callable)` method and that it guarantees that create_callable will be
+called when a new enumerator is needed with the same arguments.
+
+You can require 'enum_args/naive_cache' and take a look at `EnumArgs::NaiveCache`
+for how this would work. I suggest you don't use this class in serious
+production code, as it is an unbound hash that will grow on each combination of
+those parameters.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
