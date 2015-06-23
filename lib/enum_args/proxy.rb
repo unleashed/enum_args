@@ -1,17 +1,23 @@
 module EnumArgs
   class Proxy
+    CREATE_ENUM = lambda do |object, method_name, args, using, _ = nil|
+      Enumerator.new(object, method_name, *args, using: using)
+    end
+    private_constant :CREATE_ENUM
+
     ProxiedEnumerable.on_enumerable_methods self do |*args, **options, &blk|
       enum_delegate __method__, args, options, blk
     end
 
-    attr_accessor :object, :method_name, :args
+    attr_accessor :object, :method_name, :args, :cache
     attr_reader :using
 
-    def initialize(object, method_name, *args, using: {})
+    def initialize(object, method_name, *args, using: {}, cache: nil)
+      self.using = using
       @object = object
       @method_name = method_name
       @args = args
-      self.using = using
+      @cache = cache || CREATE_ENUM
     end
 
     def using=(using)
@@ -40,7 +46,7 @@ module EnumArgs
     end
 
     def build_enum(merge = {})
-      Enumerator.new(object, method_name, *args, using: self.using.merge(merge))
+      cache.call(object, method_name, args, using.merge(merge), CREATE_ENUM)
     end
   end
 end

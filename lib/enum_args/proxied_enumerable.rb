@@ -6,7 +6,8 @@ module EnumArgs
   module ProxiedEnumerable
     module ClassMethods
       METHODS = [:enum_args_method, :enum_args_accessor_method,
-                 :enum_args_default_args, :enum_args_default_using]
+                 :enum_args_default_args, :enum_args_default_using,
+                 :enum_args_cache]
 
       def enum_args_method
         @enum_args_method ||= :iterator
@@ -24,12 +25,17 @@ module EnumArgs
         @enum_args_default_using ||= {}
       end
 
-      def enum_args_for(method, *args, using: {}, with_enum_args_as: :enum_args)
+      def enum_args_cache
+        @enum_args_cache
+      end
+
+      def enum_args_for(method, *args, using: {}, with_enum_args_as: :enum_args, cache: nil)
         @enum_args_method = method
         @enum_args_default_args = args
         raise TypeError, "expected Hash, found #{using.class}" unless using.is_a? Hash
         @enum_args_default_using = using
         @enum_args_accessor_method = with_enum_args_as
+        @enum_args_cache = cache
       end
 
       me = self # bound variable for the :inherited block
@@ -65,7 +71,7 @@ module EnumArgs
       instance_variable_set(
         "@#{name}",
         EnumArgs::Proxy.new(self, klass.enum_args_method, *klass.enum_args_default_args,
-                            using: klass.enum_args_default_using)
+                            using: klass.enum_args_default_using, cache: klass.enum_args_cache)
       )
       define_singleton_method(name) do
         instance_variable_get("@#{name}")
