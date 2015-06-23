@@ -60,6 +60,22 @@ RSpec.describe EnumArgs do
       end
     end
 
+
+    context 'when using a simple caching scheme' do
+      subject { Helpers::CachingEnumArgs.new }
+
+      it 'calls the #call method in the cache object' do
+        args = [enum_args.args]
+        args << enum_args.using
+
+        expect(enum_args.cache).to receive(:call).
+          with(subject, enum_args.method_name, enum_args.args, enum_args.using, anything).
+          and_call_original
+
+        subject.each.next rescue StopIteration
+      end
+    end
+
     context 'when changing the default dynamic parameters' do
       let(:new_params) { { config: 'different', resumeinfo: 'none' } }
 

@@ -70,6 +70,25 @@ class Helpers
     end
   end
 
+  class CachingEnumArgs
+    require 'enum_args/naive_cache'
+    include EnumArgs
+
+    enum_args_for :my_iterator, 27, using: {config: 'this', resumeinfo: 'way'},
+      with_enum_args_as: :enum_with_args, cache: EnumArgs::NaiveCache.new
+
+    def initialize
+      # do nothing
+    end
+
+    def my_iterator(stride = 10, config: nil, resumeinfo: nil)
+      yield 1
+      yield 2
+      yield 3
+      yield 4
+    end
+  end
+
   class EnumArgsUser
     attr_reader :enum_args
 
